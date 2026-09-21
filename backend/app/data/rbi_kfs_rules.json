@@ -1,0 +1,140 @@
+[
+  {
+    "id": "R-13",
+    "title": "Scope guard",
+    "severity": "not_applicable",
+    "citation": "RBI/2024-25/18, paras 2, 10, 11",
+    "priority": "P0",
+    "description": "Verifies the document is an in-scope RBI KFS (retail/MSME term loan sanctioned on or after 1 Oct 2024). Credit cards and out-of-scope products are excluded.",
+    "templates": {
+      "pass_en": "This document appears to be an in-scope Key Facts Statement for a {loan_category} loan.",
+      "pass_hi": "यह दस्तावेज़ एक {loan_category} ऋण के लिए एक इन-स्कोप मुख्य तथ्य विवरण (KFS) प्रतीत होता है।",
+      "fail_en": "This document is not in scope: {reason}. The KFS requirements under RBI/2024-25/18 apply to retail and MSME term loans sanctioned on or after 1 Oct 2024.",
+      "fail_hi": "यह दस्तावेज़ दायरे में नहीं है: {reason}. RBI/2024-25/18 के तहत KFS आवश्यकताएं 1 अक्टूबर 2024 को या उसके बाद स्वीकृत खुदरा और MSME अवधि ऋणों पर लागू होती हैं।",
+      "not_stated_en": "Loan category or sanction date not stated in the document; scope cannot be confirmed.",
+      "not_stated_hi": "दस्तावेज़ में ऋण श्रेणी या स्वीकृति दिनांक नहीं बताया गया है; दायरे की पुष्टि नहीं की जा सकती।"
+    }
+  },
+  {
+    "id": "R-01",
+    "title": "APR matches stated APR",
+    "severity": "high",
+    "citation": "RBI/2024-25/18, para 6; Annex B",
+    "priority": "P0",
+    "description": "The computed APR (all charges, RBI Annex B method) is compared with the APR stated in the KFS. Difference ≤0.15 pp → pass; 0.15–0.50 pp → warn; >0.50 pp → fail.",
+    "templates": {
+      "pass_en": "The computed APR ({computed_apr:.2f}%) is consistent with the stated APR ({stated_apr:.2f}%) — difference {diff:.2f} pp.",
+      "pass_hi": "गणना की गई APR ({computed_apr:.2f}%) बताई गई APR ({stated_apr:.2f}%) के अनुरूप है — अंतर {diff:.2f} pp।",
+      "warn_en": "The computed APR ({computed_apr:.2f}%) differs from the stated APR ({stated_apr:.2f}%) by {diff:.2f} pp. Small differences may be due to rounding; please verify.",
+      "warn_hi": "गणना की गई APR ({computed_apr:.2f}%) बताई गई APR ({stated_apr:.2f}%) से {diff:.2f} pp भिन्न है। छोटे अंतर राउंडिंग के कारण हो सकते हैं; कृपया सत्यापित करें।",
+      "fail_en": "The computed APR ({computed_apr:.2f}%) differs from the stated APR ({stated_apr:.2f}%) by {diff:.2f} pp, which is inconsistent with the KFS requirements under RBI/2024-25/18 para 6.",
+      "fail_hi": "गणना की गई APR ({computed_apr:.2f}%) बताई गई APR ({stated_apr:.2f}%) से {diff:.2f} pp भिन्न है, जो RBI/2024-25/18 पैरा 6 के तहत KFS आवश्यकताओं के अनुरूप नहीं है।",
+      "not_stated_en": "Stated APR not found in the document; R-01 cannot be evaluated.",
+      "not_stated_hi": "दस्तावेज़ में बताई गई APR नहीं मिली; R-01 का मूल्यांकन नहीं किया जा सकता।"
+    }
+  },
+  {
+    "id": "R-02",
+    "title": "Third-party charges included in APR",
+    "severity": "high",
+    "citation": "RBI/2024-25/18, para 7",
+    "priority": "P0",
+    "description": "If the stated APR matches the APR computed excluding third-party charges (within 0.15 pp) but does not match the all-charges APR, the lender appears to have excluded third-party charges from the APR calculation.",
+    "templates": {
+      "pass_en": "The stated APR ({stated_apr:.2f}%) appears to include all charges, consistent with RBI/2024-25/18 para 7.",
+      "pass_hi": "बताई गई APR ({stated_apr:.2f}%) में सभी शुल्क शामिल प्रतीत होते हैं, जो RBI/2024-25/18 पैरा 7 के अनुरूप है।",
+      "fail_en": "The stated APR ({stated_apr:.2f}%) matches the APR computed excluding third-party charges ({excl_tp_apr:.2f}%), but not the all-charges APR ({all_charges_apr:.2f}%). This is inconsistent with the KFS requirements: insurance, legal, and other charges collected by the lender on behalf of third parties should be included in the APR.",
+      "fail_hi": "बताई गई APR ({stated_apr:.2f}%) तृतीय-पक्ष शुल्कों को छोड़कर गणना की गई APR ({excl_tp_apr:.2f}%) से मेल खाती है, लेकिन सभी-शुल्क APR ({all_charges_apr:.2f}%) से नहीं। यह KFS आवश्यकताओं के अनुरूप नहीं है।",
+      "not_applicable_en": "No third-party charges are present in this KFS; R-02 does not apply.",
+      "not_applicable_hi": "इस KFS में कोई तृतीय-पक्ष शुल्क नहीं है; R-02 लागू नहीं होता।",
+      "not_stated_en": "Stated APR or APR computation details not available; R-02 cannot be evaluated.",
+      "not_stated_hi": "बताई गई APR या APR गणना विवरण उपलब्ध नहीं है; R-02 का मूल्यांकन नहीं किया जा सकता।"
+    }
+  },
+  {
+    "id": "R-04",
+    "title": "KFS validity period",
+    "severity": "medium",
+    "citation": "RBI/2024-25/18, para 5",
+    "priority": "P0",
+    "description": "For loans with tenor ≥7 days, the KFS must remain valid for at least 3 working days. A shorter stated period is inconsistent with KFS requirements.",
+    "templates": {
+      "pass_en": "The KFS validity period ({value} {unit}) meets the minimum 3-working-day requirement.",
+      "pass_hi": "KFS वैधता अवधि ({value} {unit}) न्यूनतम 3 कार्य-दिवस आवश्यकता को पूरा करती है।",
+      "fail_en": "The stated KFS validity period ({value} {unit}) is less than 3 working days, which is inconsistent with the KFS requirements under RBI/2024-25/18 para 5.",
+      "fail_hi": "बताई गई KFS वैधता अवधि ({value} {unit}) 3 कार्य-दिवस से कम है, जो RBI/2024-25/18 पैरा 5 के तहत KFS आवश्यकताओं के अनुरूप नहीं है।",
+      "not_stated_en": "KFS validity period not stated in the document.",
+      "not_stated_hi": "दस्तावेज़ में KFS वैधता अवधि नहीं बताई गई है।"
+    }
+  },
+  {
+    "id": "R-05",
+    "title": "Unique proposal number present",
+    "severity": "low",
+    "citation": "RBI/2024-25/18, Annex A item 1",
+    "priority": "P0",
+    "description": "Each KFS should carry a unique proposal number for traceability.",
+    "templates": {
+      "pass_en": "A unique proposal number ({proposal_no}) is present in the document.",
+      "pass_hi": "दस्तावेज़ में एक अद्वितीय प्रस्ताव संख्या ({proposal_no}) मौजूद है।",
+      "warn_en": "A unique proposal number is not stated in the document. This may make it difficult to track or reference this KFS.",
+      "warn_hi": "दस्तावेज़ में एक अद्वितीय प्रस्ताव संख्या नहीं बताई गई है। इससे इस KFS को ट्रैक या संदर्भित करना कठिन हो सकता है।"
+    }
+  },
+  {
+    "id": "R-06",
+    "title": "APR computation sheet and amortisation schedule present",
+    "severity": "medium",
+    "citation": "RBI/2024-25/18, para 6",
+    "priority": "P0",
+    "description": "The KFS should include an APR computation sheet and an amortisation schedule so the borrower can verify the figures.",
+    "templates": {
+      "pass_en": "Both the APR computation sheet and the amortisation schedule are present.",
+      "pass_hi": "APR गणना पत्रक और परिशोधन अनुसूची दोनों उपस्थित हैं।",
+      "warn_en": "The following are not stated in the document: {missing_items}. These help borrowers verify the loan costs independently.",
+      "warn_hi": "निम्नलिखित दस्तावेज़ में नहीं बताए गए हैं: {missing_items}. ये उधारकर्ताओं को ऋण लागत को स्वतंत्र रूप से सत्यापित करने में मदद करते हैं।"
+    }
+  },
+  {
+    "id": "R-07",
+    "title": "Contingent charges disclosed",
+    "severity": "medium",
+    "citation": "RBI/2024-25/18, Annex A item 10",
+    "priority": "P0",
+    "description": "Penal charges, foreclosure charges, and switching charges must each be stated (or explicitly shown as nil) in the KFS.",
+    "templates": {
+      "pass_en": "Contingent charges (penal, foreclosure, switching) are disclosed in the document.",
+      "pass_hi": "आकस्मिक शुल्क (दंडात्मक, पूर्व-भुगतान, परिवर्तन) दस्तावेज़ में प्रकट किए गए हैं।",
+      "warn_en": "The following contingent charges are not stated in the document: {missing_charges}. Per RBI/2024-25/18 Annex A item 10, these should be disclosed or explicitly stated as nil.",
+      "warn_hi": "निम्नलिखित आकस्मिक शुल्क दस्तावेज़ में नहीं बताए गए हैं: {missing_charges}. RBI/2024-25/18 अनुलग्नक A मद 10 के अनुसार, इन्हें प्रकट किया जाना चाहिए।"
+    }
+  },
+  {
+    "id": "R-10",
+    "title": "EMI arithmetic check",
+    "severity": "medium",
+    "citation": "RBI/2024-25/18, Annex B",
+    "priority": "P0",
+    "description": "The stated EMI is recomputed from principal, rate, and term. A difference greater than 1% suggests a possible error.",
+    "templates": {
+      "pass_en": "The stated EMI (₹{stated_emi:.2f}) is consistent with the computed EMI (₹{computed_emi:.2f}) — difference {diff_pct:.2f}%. Note: a small difference can also arise when the first instalment falls later than one month after disbursement.",
+      "pass_hi": "बताई गई EMI (₹{stated_emi:.2f}) गणना की गई EMI (₹{computed_emi:.2f}) के अनुरूप है — अंतर {diff_pct:.2f}%। नोट: पहली किस्त यदि संवितरण के एक महीने बाद पड़ती है तो एक छोटा अंतर भी आ सकता है।",
+      "warn_en": "The stated EMI (₹{stated_emi:.2f}) differs from the computed EMI (₹{computed_emi:.2f}) by {diff_pct:.2f}%. Verify that the correct principal, rate, and term have been used. Note: a small difference can also arise when the first instalment falls later than one month after disbursement.",
+      "warn_hi": "बताई गई EMI (₹{stated_emi:.2f}) गणना की गई EMI (₹{computed_emi:.2f}) से {diff_pct:.2f}% भिन्न है। सत्यापित करें कि सही मूलधन, दर और अवधि का उपयोग किया गया है। नोट: पहली किस्त यदि संवितरण के एक महीने बाद पड़ती है तो एक छोटा अंतर भी आ सकता है।",
+      "not_stated_en": "EMI, interest rate, or term not stated; R-10 cannot be evaluated.",
+      "not_stated_hi": "EMI, ब्याज दर, या अवधि नहीं बताई गई; R-10 का मूल्यांकन नहीं किया जा सकता।"
+    }
+  },
+  {
+    "id": "R-12",
+    "title": "Fee impact insight",
+    "severity": "info",
+    "citation": "RBI/2024-25/18, Annex B",
+    "priority": "P0",
+    "description": "Informational insight: the difference between the all-charges APR and the interest rate, total charges in rupees, and charges as a percentage of the loan amount.",
+    "templates": {
+      "info_en": "Charges add {fee_impact_pp:.2f} percentage points to your cost of borrowing. Total charges: ₹{total_charges:,.2f} ({charge_pct_of_loan:.2f}% of sanctioned amount).",
+      "info_hi": "शुल्क आपकी उधार लागत में {fee_impact_pp:.2f} प्रतिशत अंक जोड़ते हैं। कुल शुल्क: ₹{total_charges:,.2f} (स्वीकृत राशि का {charge_pct_of_loan:.2f}%)।"
+    }
+  }
+]

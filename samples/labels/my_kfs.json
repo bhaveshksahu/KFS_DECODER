@@ -1,0 +1,17 @@
+{
+  "sanctioned_amount_inr": 20000,
+  "term_months": 24,
+  "interest_rate_pct": 15,
+  "instalment_amount_inr": 969.73,
+  "stated_apr_pct": 17.07,
+  "charges": [
+    {
+      "name": "Processing fee",
+      "amount_inr": 240
+    },
+    {
+      "name": "Third-party fee",
+      "amount_inr": 160
+    }
+  ]
+}

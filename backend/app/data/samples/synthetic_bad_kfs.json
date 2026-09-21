@@ -1,0 +1,115 @@
+{
+  "key": "synthetic_bad_kfs",
+  "label": "Synthetic Bad KFS (Demo)",
+  "description": "A deliberately flawed KFS authored for demo purposes. The stated APR (15.6%) excludes third-party insurance charges, triggering R-01 and R-02. Label as synthetic in the UI.",
+  "synthetic": true,
+  "extraction": {
+    "doc_meta": {
+      "is_kfs": true,
+      "loan_category": "retail",
+      "is_digital_loan": false,
+      "sanction_date": "2024-10-15",
+      "language": "en"
+    },
+    "lender": { "name": "Synthetic Finance Ltd", "type": "nbfc" },
+    "proposal_no": { "value": "SYN-2024-001", "page": 1, "quote": "Proposal SYN-2024-001", "confidence": 1.0, "status": "found" },
+    "loan": {
+      "sanctioned_amount_inr": { "value": 100000, "page": 1, "quote": "Loan amount Rs. 1,00,000", "confidence": 1.0, "status": "found" },
+      "disbursal": "upfront",
+      "term_months": { "value": 24, "page": 1, "quote": "24 monthly instalments", "confidence": 1.0, "status": "found" },
+      "instalments": [
+        {
+          "type": "EMI",
+          "count": { "value": 24, "page": 1, "quote": "24 EMIs", "confidence": 1.0, "status": "found" },
+          "amount_inr": { "value": 4707.35, "page": 1, "quote": "EMI Rs. 4,707.35", "confidence": 1.0, "status": "found" },
+          "first_due_after_days": { "value": 30, "page": 1, "quote": "first EMI 30 days after disbursement", "confidence": 1.0, "status": "found" }
+        }
+      ]
+    },
+    "rate": {
+      "interest_rate_pct": { "value": 12.0, "page": 1, "quote": "12% per annum fixed reducing balance", "confidence": 1.0, "status": "found" },
+      "type": "fixed",
+      "floating": null
+    },
+    "charges": [
+      {
+        "name": "Processing fee",
+        "category": "processing",
+        "payee": "lender",
+        "frequency": "one_time",
+        "recurrence": null,
+        "amount_inr": 3000.0,
+        "percent": null,
+        "percent_of": null,
+        "gst_included": null,
+        "page": 1,
+        "quote": "Processing fee Rs. 3,000"
+      },
+      {
+        "name": "Documentation charges",
+        "category": "documentation",
+        "payee": "lender",
+        "frequency": "one_time",
+        "recurrence": null,
+        "amount_inr": 500.0,
+        "percent": null,
+        "percent_of": null,
+        "gst_included": null,
+        "page": 1,
+        "quote": "Documentation charges Rs. 500"
+      },
+      {
+        "name": "Insurance premium",
+        "category": "insurance",
+        "payee": "third_party",
+        "frequency": "one_time",
+        "recurrence": null,
+        "amount_inr": 4000.0,
+        "percent": null,
+        "percent_of": null,
+        "gst_included": null,
+        "page": 1,
+        "quote": "Insurance premium Rs. 4,000 collected by lender on behalf of insurer"
+      }
+    ],
+    "stated_apr_pct": { "value": 15.6, "page": 1, "quote": "Annual Percentage Rate 15.6%", "confidence": 1.0, "status": "found" },
+    "contingent_charges": [
+      { "name": "Penal charges", "value": "2% per month on overdue amount", "page": 2 },
+      { "name": "Foreclosure charges", "value": "2% on outstanding principal", "page": 2 },
+      { "name": "Switching charges", "value": "Nil", "page": 2 }
+    ],
+    "validity_period": { "value": 3, "unit": "working_days", "page": 1 },
+    "cooling_off_days": { "value": null, "page": null, "quote": null, "confidence": null, "status": "not_found" },
+    "grievance": { "officer_name": "Grievance Officer", "phone": "1800-000-1234", "email": "grievance@synthetic.com", "page": 2 },
+    "recovery_agent_clause_ref": { "value": "Section 8 of this KFS", "page": 2, "quote": "recovery agent as per Section 8", "confidence": 0.9, "status": "found" },
+    "flags_present": { "apr_computation_sheet": false, "amortisation_schedule": false },
+    "amortisation_schedule": []
+  },
+  "analysis": {
+    "apr_interest_only_pct": 12.0,
+    "apr_all_charges_pct": 19.988613,
+    "apr_excl_third_party_pct": 15.618034,
+    "effective_annual_all_charges_pct": 21.925452,
+    "total_repayable": 112976.33,
+    "total_interest": 12976.33,
+    "total_charges_inr": 7500.0,
+    "fee_impact_pp": 7.988613,
+    "charge_pct_of_loan": 7.5,
+    "stamp_duty_included_in_apr": false,
+    "stamp_duty_assumption": "",
+    "instalment_used": 4707.347222,
+    "n_periods": 24,
+    "net_disbursed": 92500.0,
+    "rule_results": [
+      { "rule_id": "R-13", "status": "pass",        "severity": "not_applicable", "plain_text_en": "In scope (retail loan, Oct 2024)." },
+      { "rule_id": "R-01", "status": "fail",        "severity": "high",           "plain_text_en": "Computed APR 19.99% differs from stated APR 15.6% by 4.39 pp — inconsistent with the KFS requirements." },
+      { "rule_id": "R-02", "status": "fail",        "severity": "high",           "plain_text_en": "Stated APR 15.6% matches the APR excluding third-party insurance (15.62%) but not the all-charges APR (19.99%) — inconsistent with the KFS requirements." },
+      { "rule_id": "R-04", "status": "pass",        "severity": "medium",         "plain_text_en": "Validity period 3 working days — meets requirement." },
+      { "rule_id": "R-05", "status": "pass",        "severity": "low",            "plain_text_en": "Proposal number present." },
+      { "rule_id": "R-06", "status": "warn",        "severity": "medium",         "plain_text_en": "APR computation sheet and amortisation schedule not stated in the document." },
+      { "rule_id": "R-07", "status": "pass",        "severity": "medium",         "plain_text_en": "Contingent charges disclosed." },
+      { "rule_id": "R-10", "status": "pass",        "severity": "medium",         "plain_text_en": "EMI arithmetic consistent." },
+      { "rule_id": "R-12", "status": "pass",        "severity": "info",           "plain_text_en": "Charges add 7.99 pp. Total charges ₹7,500 (7.5% of loan)." }
+    ]
+  }
+}

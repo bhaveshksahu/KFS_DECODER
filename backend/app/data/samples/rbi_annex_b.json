@@ -1,0 +1,107 @@
+{
+  "key": "rbi_annex_b",
+  "label": "RBI Annex B Illustration",
+  "description": "The worked example from RBI circular RBI/2024-25/18 Annex B. ₹20,000 loan at 15% p.a., 24 EMIs, ₹400 in charges.",
+  "synthetic": false,
+  "extraction": {
+    "doc_meta": {
+      "is_kfs": true,
+      "loan_category": "retail",
+      "is_digital_loan": null,
+      "sanction_date": "2024-10-01",
+      "language": "en"
+    },
+    "lender": { "name": "Illustrative Lender", "type": "bank" },
+    "proposal_no": { "value": "RBI-ANNEX-B-2024", "page": 1, "quote": "Proposal RBI-ANNEX-B-2024", "confidence": 1.0, "status": "found" },
+    "loan": {
+      "sanctioned_amount_inr": { "value": 20000, "page": 1, "quote": "Loan amount Rs. 20,000", "confidence": 1.0, "status": "found" },
+      "disbursal": "upfront",
+      "term_months": { "value": 24, "page": 1, "quote": "24 monthly instalments", "confidence": 1.0, "status": "found" },
+      "instalments": [
+        {
+          "type": "EMI",
+          "count": { "value": 24, "page": 1, "quote": "24 EMIs", "confidence": 1.0, "status": "found" },
+          "amount_inr": { "value": 970, "page": 1, "quote": "EMI Rs. 970", "confidence": 1.0, "status": "found" },
+          "first_due_after_days": { "value": 30, "page": 1, "quote": "first EMI after 30 days", "confidence": 1.0, "status": "found" }
+        }
+      ]
+    },
+    "rate": {
+      "interest_rate_pct": { "value": 15.0, "page": 1, "quote": "15% per annum reducing balance", "confidence": 1.0, "status": "found" },
+      "type": "fixed",
+      "floating": null
+    },
+    "charges": [
+      {
+        "name": "Processing fee",
+        "category": "processing",
+        "payee": "lender",
+        "frequency": "one_time",
+        "recurrence": null,
+        "amount_inr": 240.0,
+        "percent": null,
+        "percent_of": null,
+        "gst_included": null,
+        "page": 1,
+        "quote": "Processing fee Rs. 240 payable to lender"
+      },
+      {
+        "name": "Third-party charges",
+        "category": "other",
+        "payee": "third_party",
+        "frequency": "one_time",
+        "recurrence": null,
+        "amount_inr": 160.0,
+        "percent": null,
+        "percent_of": null,
+        "gst_included": null,
+        "page": 1,
+        "quote": "Third-party charges Rs. 160"
+      }
+    ],
+    "stated_apr_pct": { "value": 17.07, "page": 1, "quote": "Annual Percentage Rate 17.07%", "confidence": 1.0, "status": "found" },
+    "contingent_charges": [
+      { "name": "Penal charges", "value": "2% per month on overdue amount", "page": 2 },
+      { "name": "Foreclosure charges", "value": "Nil", "page": 2 },
+      { "name": "Switching charges", "value": "Nil", "page": 2 }
+    ],
+    "validity_period": { "value": 3, "unit": "working_days", "page": 1 },
+    "cooling_off_days": { "value": null, "page": null, "quote": null, "confidence": null, "status": "not_found" },
+    "grievance": { "officer_name": "Nodal Officer", "phone": "1800-XXX-XXXX", "email": "nodal@lender.com", "page": 2 },
+    "recovery_agent_clause_ref": { "value": null, "page": null, "quote": null, "confidence": null, "status": "not_found" },
+    "flags_present": { "apr_computation_sheet": true, "amortisation_schedule": true },
+    "amortisation_schedule": [
+      { "n": 1,  "outstanding": 20000, "principal": 720,  "interest": 250, "instalment": 970 },
+      { "n": 2,  "outstanding": 19280, "principal": 729,  "interest": 241, "instalment": 970 },
+      { "n": 3,  "outstanding": 18552, "principal": 738,  "interest": 232, "instalment": 970 },
+      { "n": 24, "outstanding": 958,   "principal": 958,  "interest": 12,  "instalment": 970 }
+    ]
+  },
+  "analysis": {
+    "apr_interest_only_pct": 15.0,
+    "apr_all_charges_pct": 17.070553,
+    "apr_excl_third_party_pct": 16.235177,
+    "effective_annual_all_charges_pct": 18.47156,
+    "total_repayable": 23273.59,
+    "total_interest": 3273.59,
+    "total_charges_inr": 400.0,
+    "fee_impact_pp": 2.070553,
+    "charge_pct_of_loan": 2.0,
+    "stamp_duty_included_in_apr": false,
+    "stamp_duty_assumption": "",
+    "instalment_used": 969.732961,
+    "n_periods": 24,
+    "net_disbursed": 19600.0,
+    "rule_results": [
+      { "rule_id": "R-13", "status": "pass",        "severity": "not_applicable", "plain_text_en": "In scope (retail loan, 1 Oct 2024)." },
+      { "rule_id": "R-01", "status": "pass",        "severity": "high",           "plain_text_en": "Computed APR 17.07% matches stated 17.07%." },
+      { "rule_id": "R-02", "status": "pass",        "severity": "high",           "plain_text_en": "Stated APR includes all charges." },
+      { "rule_id": "R-04", "status": "pass",        "severity": "medium",         "plain_text_en": "Validity period 3 working days — meets requirement." },
+      { "rule_id": "R-05", "status": "pass",        "severity": "low",            "plain_text_en": "Proposal number present." },
+      { "rule_id": "R-06", "status": "pass",        "severity": "medium",         "plain_text_en": "APR sheet and amortisation schedule present." },
+      { "rule_id": "R-07", "status": "pass",        "severity": "medium",         "plain_text_en": "Contingent charges disclosed." },
+      { "rule_id": "R-10", "status": "pass",        "severity": "medium",         "plain_text_en": "EMI arithmetic consistent." },
+      { "rule_id": "R-12", "status": "pass",        "severity": "info",           "plain_text_en": "Charges add 2.07 pp. Total charges ₹400." }
+    ]
+  }
+}

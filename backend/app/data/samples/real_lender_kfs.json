@@ -1,0 +1,8 @@
+{
+  "key": "real_lender_kfs",
+  "label": "Real Lender KFS (Placeholder)",
+  "description": "Placeholder for a real lender KFS to be added. Drop a redacted PDF in samples/ and populate extraction/analysis here.",
+  "synthetic": false,
+  "extraction": null,
+  "analysis": null
+}

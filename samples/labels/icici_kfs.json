@@ -1,0 +1,13 @@
+{
+  "sanctioned_amount_inr": 1200000,
+  "term_months": 60,
+  "interest_rate_pct": 11.7,
+  "instalment_amount_inr": 26683,
+  "stated_apr_pct": 12.28,
+  "charges": [
+    {
+      "name": "Processing fees",
+      "amount_inr": 7999
+    }
+  ]
+}
