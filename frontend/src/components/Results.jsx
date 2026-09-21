@@ -268,20 +268,24 @@ function AmortisationTable({ rows }) {
 
   return (
     <Card>
-      <button
-        type="button"
-        onClick={() => setOpen(v => !v)}
-        className="flex w-full items-center justify-between text-left focus-ring"
-        aria-expanded={open}
-      >
-        <SectionHeading>Amortisation schedule ({rows.length} periods)</SectionHeading>
-        <span className="text-muted text-sm ml-2 mb-4 shrink-0" aria-hidden="true">
+      {/* Toggle header — plain div + button; no heading element inside button (invalid HTML) */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-sm font-semibold text-muted uppercase tracking-wide">
+          Amortisation schedule ({rows.length} periods)
+        </h2>
+        <button
+          type="button"
+          onClick={() => setOpen(v => !v)}
+          className="shrink-0 ml-3 text-sm text-muted hover:text-gray-700 focus-ring px-1"
+          aria-expanded={open}
+          aria-label={open ? 'Collapse amortisation schedule' : 'Expand amortisation schedule'}
+        >
           {open ? '▲' : '▼'}
-        </span>
-      </button>
+        </button>
+      </div>
 
       {open && (
-        <div className="overflow-x-auto -mx-5 px-5">
+        <div className="mt-4 overflow-x-auto -mx-5 px-5">
           <table className="w-full text-xs text-right border-collapse">
             <thead>
               <tr className="border-b border-border text-muted">
@@ -304,11 +308,11 @@ function AmortisationTable({ rows }) {
               ))}
             </tbody>
           </table>
-          {rows.length > 0 && (
-            <p className="text-xs text-muted mt-2">
-              Showing {rows.length} row{rows.length !== 1 ? 's' : ''} as provided in the document.
-            </p>
-          )}
+          <p className="text-xs text-muted mt-2">
+            {rows.length} row{rows.length !== 1 ? 's' : ''}.
+            Computed from the stated principal, rate and EMI using reducing-balance method.
+            The final period is adjusted so the closing balance is exactly ₹0.
+          </p>
         </div>
       )}
     </Card>
@@ -563,8 +567,12 @@ export default function Results({ analysis, extraction, onReset }) {
   const ext = extraction?.extraction
   const statedApr = ext?.stated_apr_pct ? ev(ext.stated_apr_pct) : null
 
-  // Amortisation schedule — lives on the extraction, not the analysis
-  const amortRows = ext?.amortisation_schedule ?? []
+  // Amortisation schedule — prefer the computed schedule from /analyze;
+  // fall back to the one extracted from the document (may be partial).
+  const amortRows =
+    (analysis.amortisation_schedule?.length > 0)
+      ? analysis.amortisation_schedule
+      : (ext?.amortisation_schedule ?? [])
 
   return (
     <main className="max-w-lg mx-auto px-4 py-8 space-y-6">

@@ -14,7 +14,7 @@ from pydantic import BaseModel
 
 from ..models.schemas import KFSExtraction
 from ..services import storage
-from ..services.analysis import build_summary
+from ..services.analysis import build_summary, compute_amortisation_schedule
 from ..services.rules import run_all
 
 logger = logging.getLogger(__name__)
@@ -79,6 +79,27 @@ async def analyze_extraction(
     output = run_all(extraction)
     summary = build_summary(extraction)
 
+    # Compute amortisation schedule from extraction inputs
+    _amort_schedule: list[dict] = []
+    _p = extraction.loan.sanctioned_amount_inr.value
+    _r = extraction.rate.interest_rate_pct.value
+    _n = extraction.loan.term_months.value
+    if _p and _r and _n:
+        # Use the same instalment as the APR engine: stated if available, else computed
+        _inst: float | None = None
+        if extraction.loan.instalments:
+            _inst = extraction.loan.instalments[0].amount_inr.value
+        if not _inst:
+            from ..services.apr import emi as _emi
+            _inst = _emi(float(_p), float(_r), int(_n))
+        _rows = compute_amortisation_schedule(float(_p), float(_r), int(_n), float(_inst))
+        _amort_schedule = [
+            {"n": row.n, "outstanding": row.outstanding,
+             "principal": row.principal, "interest": row.interest,
+             "instalment": row.instalment}
+            for row in _rows
+        ]
+
     analysis_id = str(uuid.uuid4())
     result: dict[str, Any] = {
         "analysis_id": analysis_id,
@@ -111,6 +132,8 @@ async def analyze_extraction(
             "instalment_used": av.instalment_used,
             "n_periods": av.n_periods,
         }
+
+    result["amortisation_schedule"] = _amort_schedule
 
     if summary:
         result["summary"] = {

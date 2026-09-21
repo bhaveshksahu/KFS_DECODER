@@ -5,12 +5,14 @@ Converts a KFSExtraction into:
   - APR variants (all three + EAR)
   - Summary metrics
   - Per-category charge breakdown
+  - Computed amortisation schedule
 
 Public API
 ----------
 build_charge_items(extraction, include_stamp_duty) -> list[ChargeItem]
 compute_apr_variants(extraction, include_stamp_duty) -> APRVariants
 build_summary(extraction, include_stamp_duty)        -> AnalysisSummary
+compute_amortisation_schedule(principal, annual_rate_pct, n, instalment) -> list[AmortRow]
 """
 
 from __future__ import annotations
@@ -54,6 +56,71 @@ class ChargeBreakdown:
     payee: str          # "lender" | "third_party"
     total_inr: float
     names: list[str]
+
+
+# ---------------------------------------------------------------------------
+# Amortisation schedule
+# ---------------------------------------------------------------------------
+
+
+@dataclass
+class AmortRow:
+    """One row of the computed reducing-balance amortisation schedule."""
+    n: int             # period number (1-based)
+    outstanding: float # opening balance for this period
+    principal: float   # principal repaid this period
+    interest: float    # interest charged this period
+    instalment: float  # total payment this period
+
+
+def compute_amortisation_schedule(
+    principal: float,
+    annual_rate_pct: float,
+    n: int,
+    instalment: float,
+) -> list[AmortRow]:
+    """Compute a full reducing-balance amortisation schedule.
+
+    Parameters
+    ----------
+    principal        : sanctioned loan amount (opening balance period 1)
+    annual_rate_pct  : nominal annual interest rate, e.g. 15.0
+    n                : total number of monthly periods
+    instalment       : fixed monthly payment (EMI) — full-precision value
+
+    Rounding:
+        Each period's interest and principal are rounded to 2 dp.
+        The final period's principal is adjusted so the closing balance
+        reaches exactly 0 (absorbs accumulated rounding drift).
+
+    Returns a list of n AmortRow objects.
+    """
+    r = annual_rate_pct / 12 / 100
+    rows: list[AmortRow] = []
+    balance = principal
+
+    for i in range(1, n + 1):
+        opening = balance
+        interest = round(opening * r, 2)
+        if i < n:
+            principal_repaid = round(instalment - interest, 2)
+            inst_this = instalment
+        else:
+            # Last period: repay exactly the remaining balance
+            principal_repaid = round(balance, 2)
+            inst_this = round(interest + principal_repaid, 2)
+
+        balance = round(balance - principal_repaid, 2)
+
+        rows.append(AmortRow(
+            n=i,
+            outstanding=round(opening, 2),
+            principal=principal_repaid,
+            interest=interest,
+            instalment=round(inst_this, 2),
+        ))
+
+    return rows
 
 
 @dataclass
