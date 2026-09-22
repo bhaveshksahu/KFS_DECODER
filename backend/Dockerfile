@@ -1,20 +1,15 @@
-# syntax=docker/dockerfile:1
-# ---------------------------------------------------------------------------
-# KFS Decoder — Cloud Run container
-# ---------------------------------------------------------------------------
-FROM python:3.12-slim AS base
-
-WORKDIR /app
-
-# Install dependencies first (layer-cached)
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy application source
-COPY app/ ./app/
-
-# Cloud Run injects PORT; default to 8080
-ENV PORT=8080
-
-# Uvicorn — single worker (Cloud Run scales via instances, not threads)
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT}"]
+# ─────────────────────────────────────────────────────────────────────────────
+# This Dockerfile is intentionally left as a redirect notice.
+#
+# The canonical build file is the repo-root  /Dockerfile  (multi-stage build:
+#   Stage 1 — Node 20 Alpine — builds the React/Vite frontend
+#   Stage 2 — Python 3.12 slim — runs FastAPI/uvicorn with the compiled SPA)
+#
+# To build locally from the repo root:
+#   docker build -t kfs-decoder .
+#
+# To run locally:
+#   docker run -p 8080:8080 -e GEMINI_API_KEY=<key> kfs-decoder
+#
+# See /deploy.ps1 for the Cloud Run deployment script.
+# ─────────────────────────────────────────────────────────────────────────────

@@ -167,6 +167,19 @@ class TestHealthz:
         assert r.status_code == 200
         assert r.json()["status"] == "ok"
 
+    def test_response_contains_cloud_run_fields(self, client):
+        """Health check must expose the fields Cloud Run operators care about."""
+        r = client.get("/healthz")
+        body = r.json()
+        assert "gemini_model"     in body, "gemini_model missing from /healthz"
+        assert "storage_backend"  in body, "storage_backend missing from /healthz"
+        assert "gcp_project"      in body, "gcp_project missing from /healthz"
+        assert "location"         in body, "location missing from /healthz"
+
+    def test_content_type_is_json(self, client):
+        r = client.get("/healthz")
+        assert "application/json" in r.headers.get("content-type", "")
+
 
 # ---------------------------------------------------------------------------
 # Upload validation
