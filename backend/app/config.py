@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
     # Gemini / Vertex AI
-    gemini_model: str = "gemini-2.0-flash"
+    gemini_model: str = "gemini-2.5-flash"
     gemini_backend: str = "developer"   # "developer" | "vertex"
     gemini_api_key: str = ""            # required when gemini_backend = "developer"
     gcp_project: str = ""
